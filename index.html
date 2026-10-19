@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>國文課綱爭議 | The Chinese Curriculum Debate</title>
+<style>
+  :root {
+    --navy: #0F2740;
+    --cream: #F7F1E3;
+    --orange: #E07A3F;
+    --teal: #3A8D8F;
+    --muted: rgba(247, 241, 227, 0.72);
+    --card: #16324f;
+    --border: rgba(247, 241, 227, 0.14);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: "Noto Sans TC", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .lang-en body, body.lang-en { }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15, 39, 64, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .brand {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--orange);
+  }
+
+  .lang-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .lang-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .lang-toggle button.active {
+    background: var(--orange);
+    color: var(--navy);
+  }
+
+  .lang-toggle button:hover:not(.active) {
+    color: var(--cream);
+  }
+
+  /* ---------- Language visibility ---------- */
+  [data-lang] { display: none; }
+  html[lang="zh-Hant"] [data-lang="zh"] { display: revert; }
+  html[lang="en"] [data-lang="en"] { display: revert; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 90px 0 70px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero .kicker {
+    color: var(--orange);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 7vw, 56px);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    margin-bottom: 28px;
+  }
+
+  .hero .lead {
+    font-size: clamp(17px, 2.4vw, 20px);
+    color: var(--muted);
+    max-width: 640px;
+  }
+
+  .stat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 44px;
+  }
+
+  .stat {
+    flex: 1 1 200px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 26px;
+  }
+
+  .stat .num {
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--orange);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .stat .lbl {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ---------- Sections ---------- */
+  section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section:last-of-type { border-bottom: none; }
+
+  .sec-label {
+    color: var(--teal);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  h2 {
+    font-size: clamp(26px, 4.5vw, 36px);
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 32px;
+  }
+
+  p { margin-bottom: 20px; color: var(--cream); }
+  p.muted { color: var(--muted); }
+
+  /* ---------- Numbered blocks ---------- */
+  .blocks { display: flex; flex-direction: column; gap: 22px; }
+
+  .block {
+    display: flex;
+    gap: 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 30px;
+    align-items: flex-start;
+  }
+
+  .block .num {
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--orange);
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 52px;
+    padding-top: 4px;
+  }
+
+  .block h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--cream);
+  }
+
+  .block p {
+    font-size: 16px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ---------- Conclusion bar ---------- */
+  .conclusion {
+    margin-top: 32px;
+    background: var(--orange);
+    color: var(--navy);
+    border-radius: 14px;
+    padding: 26px 30px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  /* ---------- Action list ---------- */
+  .action-list { display: flex; flex-direction: column; gap: 18px; margin-top: 8px; }
+
+  .action {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 24px 26px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .action .check {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: var(--cream);
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .action h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .action p { font-size: 16px; color: var(--muted); margin: 0; line-height: 1.7; }
+
+  /* ---------- Footer ---------- */
+  footer {
+    padding: 56px 0 80px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  footer .note {
+    margin-top: 16px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--orange);
+    background: rgba(224, 122, 63, 0.08);
+    border-radius: 0 8px 8px 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 560px) {
+    .block { padding: 22px 20px; gap: 18px; }
+    .block .num { font-size: 28px; min-width: 42px; }
+    .action { padding: 20px 20px; }
+    .hero { padding: 60px 0 50px; }
+    section { padding: 54px 0; }
+    .header-inner { padding: 12px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <span data-lang="zh">國文課綱爭議</span>
+      <span data-lang="en">CURRICULUM DEBATE</span>
+    </div>
+    <div class="lang-toggle">
+      <button id="btn-zh" onclick="setLang('zh-Hant')" class="active">中</button>
+      <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kicker">
+      <span data-lang="zh">108 課綱觀察</span>
+      <span data-lang="en">THE 108 CURRICULUM</span>
+    </div>
+    <h1>
+      <span data-lang="zh">文言文被砍，<br>然後呢？</span>
+      <span data-lang="en">Classical Chinese Was Cut.<br>Then What?</span>
+    </h1>
+    <p class="lead">
+      <span data-lang="zh">推薦古文從 30 篇減半為 15 篇，文言比例從 45–65% 降到 35–45%。經典被抽走後，騰出的空間放進了什麼？問題不是白話文，是用什麼標準選白話文。</span>
+      <span data-lang="en">Recommended classical texts were halved from 30 to 15, and the classical proportion fell from 45–65% to 35–45%. After the classics were removed, what filled the space? The question is not modern Chinese—it is the standard used to select it.</span>
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num">30 → 15</div>
+        <div class="lbl">
+          <span data-lang="zh">推薦古文篇數</span>
+          <span data-lang="en">Recommended classical texts</span>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="num">45–65%<br>→ 35–45%</div>
+        <div class="lbl">
+          <span data-lang="zh">文言文比例</span>
+          <span data-lang="en">Classical Chinese proportion</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <section>
+    <div class="sec-label">
+      <span data-lang="zh">問題在哪</span>
+      <span data-lang="en">WHAT WENT WRONG</span>
+    </div>
+    <h2>
+      <span data-lang="zh">三個後果，不是偶然</span>
+      <span data-lang="en">Three Consequences, Not Coincidence</span>
+    </h2>
+
+    <div class="blocks">
+      <div class="block">
+        <div class="num">01</div>
+        <div>
+          <h3><span data-lang="zh">經典被抽走</span><span data-lang="en">Canonical texts removed</span></h3>
+          <p>
+            <span data-lang="zh">《岳陽樓記》《廉恥》《勸學》退出推薦名單，古文從 30 篇減半為 15 篇。學生接觸經典的機會被系統性壓縮。</span>
+            <span data-lang="en">"Yueyang Tower," "Sense of Shame," and "Encouraging Learning" were dropped from the recommended list. Classical texts were halved from 30 to 15. Students' exposure to the canon was systematically reduced.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="num">02</div>
+        <div>
+          <h3><span data-lang="zh">選文標準轉向</span><span data-lang="en">Selection logic shifted</span></h3>
+          <p>
+            <span data-lang="zh">從「文學經典」轉向「能討論當代議題」。議題正確性可能壓過文學訓練價值，選文邏輯被政治化。</span>
+            <span data-lang="en">From "literary classics" to "texts that discuss contemporary issues." Issue relevance can overshadow literary training value—and the selection logic becomes politicized.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="num">03</div>
+        <div>
+          <h3><span data-lang="zh">爭議文本進課本</span><span data-lang="en">Controversial text entered the textbook</span></h3>
+          <p>
+            <span data-lang="zh">高三課本收錄〈泳褲〉，最被記住的是那個詞，不是文字、結構或思想。國文課本不該讓爭議本身變成選文的主要記憶點。</span>
+            <span data-lang="en">A senior-high textbook included an essay remembered mainly for one explicit word—not for its language, structure, or thought. A Chinese textbook should not let the controversy itself become the main takeaway.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="conclusion">
+      <span data-lang="zh">問題不是白話文，是用什麼標準選白話文。</span>
+      <span data-lang="en">The issue is not modern Chinese. It is the standard used to select it.</span>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section>
+    <div class="sec-label">
+      <span data-lang="zh">家長可以做的事</span>
+      <span data-lang="en">WHAT PARENTS CAN DO</span>
+    </div>
+    <h2>
+      <span data-lang="zh">與其只罵課綱，不如把國文課拿回來</span>
+      <span data-lang="en">Instead of Only Criticizing, Take the Class Back</span>
+    </h2>
+
+    <div class="action-list">
+      <div class="action">
+        <div class="check">1</div>
+        <div>
+          <h3><span data-lang="zh">讀完爭議全文，再判斷</span><span data-lang="en">Read the full text before judging</span></h3>
+          <p>
+            <span data-lang="zh">不要只讀新聞標題，也不要只讀被截取的那一句。先讀完全文，再決定它是否適合進入國文課堂。</span>
+            <span data-lang="en">Do not rely only on headlines or the one quoted sentence. Read the whole essay before deciding whether it belongs in a Chinese classroom.</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="action">
+        <div class="check">2</div>
+        <div>
+          <h3><span data-lang="zh">找國文老師談教學意圖</span><span data-lang="en">Ask the teacher about teaching intent</span></h3>
+          <p>
+            <span data-lang="zh">問老師怎麼處理這篇、有沒有帶學生讀完整篇、討論背後的議題。區分「你不認同的文本」和「你不認同的教育」。</span>
+            <span data-lang="en">Ask how the text is taught, whether students read the whole piece, and whether the underlying issues are discussed. Distinguish "a text you disagree with" from "an education you disagree with."</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="action">
+        <div class="check">3</div>
+        <div>
+          <h3><span data-lang="zh">認真評估自學</span><span data-lang="en">Seriously evaluate homeschooling</span></h3>
+          <p>
+            <span data-lang="zh">如果你已經不信任這套選文邏輯，把老師請出來，帶小孩回家讀該讀的國文。自學不是逃生門，是重新設計一門課的施工圖。</span>
+            <span data-lang="en">If you no longer trust the selection logic, bring in a teacher and design the Chinese class yourself. Homeschooling is not an escape door—it is a blueprint for rebuilding the course.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>
+      <span data-lang="zh">本文為個人觀察與評論，不代表任何政黨、政府機關或學校立場。文中所述課綱數據與選文爭議，請以官方公告與完整文本為準。</span>
+      <span data-lang="en">This page reflects personal observation and commentary. It does not represent the position of any party, government agency, or school. For curriculum data and textbook selections, refer to official announcements and the full texts.</span>
+    </p>
+    <div class="note">
+      <span data-lang="zh">最後更新：2026 年 10 月</span>
+      <span data-lang="en">Last updated: October 2026</span>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh-Hant');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    try { localStorage.setItem('preferred-lang', lang); } catch (e) {}
+  }
+
+  // Load saved preference
+  (function () {
+    let saved = null;
+    try { saved = localStorage.getItem('preferred-lang'); } catch (e) {}
+    if (saved === 'en' || saved === 'zh-Hant') {
+      setLang(saved);
+    } else {
+      // Auto-detect browser language
+      const browserLang = (navigator.language || 'zh').toLowerCase();
+      if (browserLang.startsWith('en')) {
+        setLang('en');
+      } else {
+        setLang('zh-Hant');
+      }
+    }
+  })();
+</script>
+
+</body>
+</html>
